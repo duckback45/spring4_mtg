@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3apper.dtd">
+<mapper namespace="member">
+
+	<resultMap type="memberModel" id="memberRes">
+		<result property="mem_id" column="mem_id" />
+		<result property="mem_pw" column="mem_pw" />
+		<result property="mem_nickname" column="mem_nickname" />
+		<result property="mem_email" column="mem_email" />
+		<result property="mem_mobile" column="mem_mobile" />
+		<result property="mem_type" column="mem_type" />
+	</resultMap>
+
+	<!-- 공통으로 사용할 select 정의 -->
+	<sql id="select-all">
+		SELECT * FROM MEMBER
+	</sql>
+
+	<select id="selectAll" resultMap="memberRes" parameterType="int">
+		<include refid="select-all" />
+	</select>
+
+	<!-- 회원가입 -->
+	<insert id="insertMember" parameterType="memberModel">
+		INSERT INTO MEMBER(MEM_ID, MEM_PW, MEM_NICKNAME, MEM_EMAIL, MEM_MOBILE, MEM_TYPE)
+		VALUES(#{mem_id}, #{mem_pw}, #{mem_nickname}, #{mem_email}, #{mem_mobile}, #{mem_type})
+	</insert>
+
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="memberModel">
+		UPDATE MEMBER SET mem_nickname = #{mem_nickname},
+						  mem_pw = #{mem_pw},
+						  mem_email = #{mem_email},
+						  mem_mobile = #{mem_mobile}
+		where mem_id = #{mem_id}
+	</update>
+
+	<!-- 아이디 찾기 -->
+	<select id="idfind" parameterType="memberModel" resultMap="memberRes">
+		select * from member where mem_nickname = #{mem_nickname} and mem_email = #{mem_email}
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<select id="pwfind" parameterType="memberModel" resultMap="memberRes">
+		select * from member where mem_id = #{mem_id} and mem_email = #{mem_email}
+	</select>
+
+	<!-- 회원탈퇴 -->
+	<delete id="deleteMember" parameterType="String">
+		DELETE FROM MEMBER WHERE mem_nickname = #{mem_nickname}
+	</delete>
+
+	<!-- 로그인 -->
+	<select id="login" parameterType="memberModel" resultMap="memberRes">
+		select * from member where mem_id = #{mem_id} and mem_pw = #{mem_pw}
+	</select>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- 아이디중복 확인 -->
+	<select id="idCheck" parameterType="String" resultMap="memberRes">
+		<include refid="select-all" />
+		WHERE mem_id = #{mem_id}
+	</select>
+
+	<!-- 아이디 찾기 쿼리문 정의 -->
+	<select id="getMember" parameterType="String" resultMap="memberRes">
+		<include refid="select-all" />
+		WHERE mem_id = #{mem_id}
+	</select>
+
+	<!-- 아이디검색 -->
+	<select id="selectSearch0" parameterType="string" resultMap="memberRes">
+		<include refid="select-all" />
+		WHERE mem_id like #{mem_id}
+	</select>
+</mapper>

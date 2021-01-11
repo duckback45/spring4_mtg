@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notice">	
+	
+	<resultMap type="notice" id="noticeRes">
+		<result property="num" column="num" />		
+		<result property="writer" column="writer" />
+		<result property="title" column="title" />		
+		<result property="readhit" column="readhit" />
+		<result property="content" column="content" />
+		<result property="regdate" column="regdate"/>
+	</resultMap>
+
+	<!-- 공통으로 사용할 select 절 정의 -->
+		<sql id="select-all">
+			SELECT * FROM NOTICE
+		</sql>
+		
+		<!-- 공통으로 사용할 where-no 절 정의 -->
+		<sql id="where-num">
+			WHERE num = #{num}
+		</sql>
+	
+	<!-- select 쿼리문 정의 -->
+		<select id="selectAll" resultMap="noticeRes">
+			<include refid="select-all" />
+			ORDER BY num DESC
+		</select>
+		
+		<select id="selectOne" resultMap="noticeRes" parameterType="int">
+			<include refid="select-all" />
+			<include refid="where-num" />
+		</select>
+		
+		<!-- <select id="selectLastNum" parameterType="int" resultType="notice">
+			SELECT max(num) as num FROM NOTICE
+		</select> -->
+		
+	<!-- 제목검색 -->
+	<select id="selectSearchT" resultMap="noticeRes" parameterType="string">
+		<include refid="select-all" />
+		 WHERE title like '%'||#{search}||'%' ORDER BY num DESC
+	</select>
+	
+	<!-- 내용검색 -->
+	<select id="selectSearchC" resultMap="noticeRes" parameterType="string">
+		<include refid="select-all" />
+		 WHERE content like '%'||#{search}||'%' ORDER BY num DESC
+	</select>
+		
+	<!-- insert 쿼리문 정의 -->
+	<insert id="insertNotice" parameterType="notice">
+		INSERT INTO NOTICE (NUM,
+							WRITER,
+                       		TITLE,
+                       		CONTENT,
+                       		REGDATE
+        	                )
+            	   VALUES (NOTICE_NUM_SEQ.NEXTVAL,
+            	   		   #{writer},
+                	 	   #{title},                	 	
+                	 	   #{content},
+                           sysdate
+                           )
+	</insert>
+		
+	<!-- update 쿼리문 정의 -->
+	<update id="updateNotice" parameterType="notice">
+    	UPDATE NOTICE SET TITLE = #{title},
+						  CONTENT = #{content},
+						  REGDATE = sysdate
+		<include refid="where-num" />
+   	</update>
+    
+    <update id="updateReadhit" parameterType="int">
+    	UPDATE NOTICE SET READHIT = readhit + 1
+			<include refid="where-num" />
+   	</update>
+   	
+	<!-- delete 쿼리문 정의 -->
+  	<delete id="deleteNotice" parameterType="notice">
+		DELETE FROM NOTICE
+		<include refid="where-num" />
+   	</delete>
+</mapper>

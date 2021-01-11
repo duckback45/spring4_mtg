@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="review">
+
+	<resultMap type="reviewModel" id="reviewRes">
+		<result property="num" column="num"/>
+		<result property="writer" column="writer"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="count" column="count"/>
+		<result property="readhit" column="readhit"/>
+		<result property="regdate" column="regdate"/>
+		<result property="main_img" column="mainimg"/>
+	</resultMap>
+	
+	<select id="reviewList" resultMap="reviewRes">
+		select * from travelog order by num desc
+	</select>
+
+	<!-- 게시판 글등록 -->
+	<insert id="insertReview" parameterType="reviewModel">
+         INSERT INTO travelog (num, writer, title, content, regdate, mainimg) 
+         VALUES (
+                travelog_num_seq.nextval
+              , #{writer}
+              , #{title}
+              , #{content}
+              , sysdate
+              , #{main_img}
+         )
+    </insert>  
+	
+	<!-- 게시판 상세보기 : 게시글 가져오기 -->	
+	<select id="getReviewOne" resultMap="reviewRes" parameterType="int">
+		select * from travelog where  num = #{num}
+	</select>	
+	
+	<!-- 게시판 상세보기 : 조회수 증가 -->
+	<update id="updateReadhit" parameterType="int">
+		update travelog set readhit = readhit+1 where num = #{num}
+	</update>
+	
+	<!-- 게시판 수정 -->
+	<update id="updateReview" parameterType="reviewModel">
+    	update travelog set title = #{title}, content = #{content}, regdate = sysdate, mainimg = #{main_img}  where num = #{num}
+ 	</update>
+   	
+   	<!-- 게시판 삭제 -->
+   	<delete id="deleteReview" parameterType="int">
+		delete from travelog where num = #{num}
+   	</delete>
+	
+	
+
+</mapper>

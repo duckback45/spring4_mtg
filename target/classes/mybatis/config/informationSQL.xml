@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="information">
+   <resultMap type="informationModel" id="informationRes">
+		<result property="num" column="num"/>
+		<result property="writer" column="writer"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="count" column="count"/>
+		<result property="readhit" column="readhit"/>
+		<result property="regdate" column="regdate"/>
+		<result property="main_img" column="main_img"/>
+	</resultMap>
+	<resultMap type="informationComModel" id="informationCOMRes">
+		<result property="num" column="num" />		
+		<result property="writer" column="writer" />
+		<result property="content" column="content" />		
+		<result property="comment_num" column="comment_num" />
+		<result property="regdate" column="regdate" />
+		
+	</resultMap>
+
+   
+		
+		<select id="informationList" resultMap="informationRes">
+        SELECT * FROM information order by num desc
+    </select>
+
+    
+    
+    <select id="informationListOne" resultMap="informationRes">
+        SELECT  * FROM information WHERE num = #{num}
+    </select>
+    
+     <insert id="informationInsert" parameterType="informationModel">
+         INSERT INTO information (num, writer, title, content, main_img, regdate) 
+         VALUES (
+                INFORMATION_NUM_SEQ.NEXTVAL
+              , #{writer, jdbcType=VARCHAR}
+              , #{title, jdbcType=VARCHAR}
+              , #{content,jdbcType=VARCHAR}
+              , #{main_img,jdbcType=VARCHAR}
+              , sysdate
+              
+         )
+    </insert>  
+    
+     <update id="informationUpdate" parameterType="informationModel">
+         UPDATE information SET
+              writer = #{writer,jdbcType=VARCHAR},
+              title = #{title,jdbcType=VARCHAR},
+              content = #{content,jdbcType=VARCHAR},
+              main_img = #{main_img,jdbcType=VARCHAR},
+              regdate = sysdate
+         WHERE num = #{num}
+    </update>
+
+    <delete id="informationDelete" parameterType="informationModel">
+         DELETE FROM information WHERE num = #{num}
+    </delete>
+
+    <select id="selectInfomationCom" resultMap="informationCOMRes" parameterType="informationComModel">
+			SELECT * FROM informationcom where num = #{num} 
+		</select>
+    
+   
+    <insert id="insertInfomationCom" parameterType="informationComModel">
+		
+      	INSERT INTO informationcom (num, writer, content, comment_num, regdate)
+                VALUES (#{num}, #{writer}, #{content}, informationcom_num_seq.NEXTVAL, sysdate)
+		</insert>
+    <delete id="deleteInfomationCom" parameterType="informationComModel">
+			DELETE FROM informationcom where comment_num=#{comment_num} and num=#{num} 
+			
+   		 </delete>
+   		 
+   		 
+   		  <select id="selectSearch" parameterType="hashmap" resultMap="informationRes">
+    SELECT * FROM information
+    <where>
+          <choose>
+          <when test="sch_type == 'title'">
+          AND title like '%'||#{sch_value}||'%' ORDER BY num DESC
+          </when>
+          <when test="sch_type == 'content'">
+          AND content like '%'||#{sch_value}||'%' ORDER BY num DESC
+          </when>
+          <when test="sch_type == 'content2'">
+          AND content like '%'||#{sch_value}||'%' ORDER BY num DESC
+          </when>
+          <when test="sch_type == 'writer'">
+          AND writer like '%'||#{sch_value}||'%' ORDER BY num DESC
+          </when>
+          </choose>
+
+    </where>
+</select>
+
+<update id="readhit" parameterType="int">
+
+		update information set readhit = readhit+1 where num = #{num}
+</update>
+<update id="like" parameterType="informationModel">
+UPDATE information SET count = nvl(count,0) + 1 WHERE num = #{num}
+</update>
+   
+
+    
+   
+    </mapper>

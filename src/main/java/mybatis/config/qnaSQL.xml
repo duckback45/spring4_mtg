@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qna">
+
+	<resultMap type="qna" id="qnaRes">
+		<result property="num" column="num" />
+		<result property="writer" column="writer" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="regdate" column="regdate" />
+		<result property="readhit" column="readhit" />
+	</resultMap>
+
+	<resultMap type="qnaReply" id="qnaReplyRes">
+		<result property="board_no" column="board_no" />
+		<result property="reply_id" column="reply_id" />
+		<result property="reply_content" column="reply_content" />
+		<result property="registDate" column="registDate" />
+		<result property="reply_no" column="reply_no" />
+	</resultMap>
+
+
+	<!-- 공통으로 사용할 select 절 정의 -->
+	<sql id="select-all-n">
+		SELECT * FROM QUESTION
+	</sql>
+
+	<!-- 공통으로 사용할 where-no 절 정의 -->
+	<sql id="where-no-n">
+		WHERE num = #{num}
+	</sql>
+
+
+	<!-- select 쿼리문 정의 -->
+	<select id="selectAll-n" resultMap="qnaRes">
+		<include refid="select-all-n" />
+		ORDER BY num DESC
+	</select>
+
+	<select id="selectOne-n" resultMap="qnaRes" parameterType="int">
+		<include refid="select-all-n" />
+		<include refid="where-no-n" />
+	</select>
+
+	<!-- <select id="selectLastNo-n" parameterType="int" resultType="notice"> 
+		SELECT max(num) as num FROM QUESTION </select> -->
+
+	<!-- <select id="selectPassword-n" resultMap="qnaRes" > <include refid="select-all-n" 
+		/> <include refid="where-no-n" /> AND password = #{password} </select> -->
+
+	<!-- 제목검색 -->
+	<select id="selectSearch0-n" resultMap="qnaRes" parameterType="string">
+		<include refid="select-all-n" />
+		WHERE title like #{search}
+		ORDER BY num DESC
+	</select>
+
+	<!-- 내용검색 -->
+	<select id="selectSearch1-n" resultMap="qnaRes" parameterType="string">
+		<include refid="select-all-n" />
+		WHERE content like #{search}
+		ORDER BY num DESC
+	</select>
+
+	<!-- 제목+내용검색 -->
+	<select id="selectSearch2-n" resultMap="qnaRes" parameterType="string">
+		<include refid="select-all-n" />
+		WHERE title like #{search} or content like #{search}
+		ORDER BY num DESC
+	</select>
+
+	<!-- 작성자검색 -->
+	<select id="selectSearch3-n" resultMap="qnaRes" parameterType="String">
+		<include refid="select-all-n" />
+		WHERE writer like #{search}
+		ORDER BY num DESC
+	</select>
+
+
+
+	<update id="update" parameterType="qna">
+		UPDATE QUESTION SET
+		TITLE = #{title},
+		CONTENT = #{content},
+		REGDATE = sysdate
+		where num = #{num}
+	</update>
+
+
+	<update id="updateReadhit-n" parameterType="int">
+		UPDATE QUESTION SET READHIT = readhit + 1
+		<include refid="where-no-n" />
+	</update>
+
+
+	<delete id="deleteQna-n" parameterType="qna">
+		DELETE FROM QUESTION
+		<include refid="where-no-n" />
+	</delete>
+
+
+
+
+	<insert id="inserQna" parameterType="qna">
+
+		INSERT INTO QUESTION (NUM,
+		WRITER,
+		TITLE,
+		CONTENT,
+		REGDATE
+		)
+		VALUES (question_num_seq.NEXTVAL,
+		#{writer},
+		#{title},
+		#{content},
+		sysdate
+		)
+	</insert>
+
+
+
+
+
+
+
+	<!-- reply 쿼리 시작 -->
+	<!-- <result property="board_no" column="board_no" /> <result property="reply_id" 
+		column="reply_id" /> <result property="reply_pass" column="reply_pass" /> 
+		<result property="reply_content" column="reply_content" /> <result property="registDate" 
+		column="registDate" /> -->
+	<select id="selectReplyAll" resultMap="qnaReplyRes"
+		parameterType="qnaReply">
+		SELECT * FROM reply where board_no=#{board_no}
+	</select>
+
+	<insert id="insertReply" parameterType="qnaReply">
+
+		INSERT INTO REPLY (board_no,
+		reply_id,
+		reply_content,
+		registDate,
+		reply_no
+
+
+		)
+		VALUES (
+		#{board_no},
+		#{reply_id},
+		#{reply_content},
+		sysdate,
+		reply_no_seq.NEXTVAL
+		)
+	</insert>
+
+
+
+
+	<delete id="deleteReply" parameterType="qnaReply">
+		DELETE FROM reply where reply_no=#{reply_no} and board_no=#{board_no}
+
+	</delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

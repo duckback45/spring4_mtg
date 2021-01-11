@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/jdbc  
+	http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+
+	<!-- mybatis 설정을 위한 setting -->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@121.160.41.249:1522:SERVER2" />
+		<property name="username" value="KH0102" />
+		<property name="password" value="oracle" />
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation" 
+			value="classpath:mybatis/config/SqlSessionConfig.xml"></property>
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- <bean id="dataSource" class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource" 
+		destroy-method="close"> <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> 
+		<property name="url" value="jdbc:oracle:thin:@121.160.41.249:1522:SERVER2"/> 
+		<property name="username" value="KH0102"/> <property name="password" value="oracle"/> 
+		</bean> <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<property name="dataSource" ref="dataSource"></property> <property name="configLocation" 
+		value="classpath:mybatis/config/SqlSessionConfig.xml"> </property> </bean> 
+		<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate"> 
+		<constructor-arg ref="sqlSessionFactory"></constructor-arg> </bean> -->
+</beans>

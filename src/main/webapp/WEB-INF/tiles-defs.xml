@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="main" template="/WEB-INF/views/common/layout_main.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/common/body.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+	</definition>
+	<definition name="view" template="/WEB-INF/views/common/layout_view.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="sidebar" value="/WEB-INF/views/plan/planview1.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/common/body.jsp" />		
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+	</definition>
+	
+	<!-- footer -->
+	<definition name="aboutUs" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/common/footer/aboutUs.jsp"/>
+    </definition>
+    
+	<definition name="features" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/common/footer/features.jsp"/>
+    </definition>
+    
+    <definition name="noticeForm" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/notice/noticeForm.jsp"/>
+    </definition>
+    
+     <definition name="noticeList" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/notice/noticeList.jsp"/>
+    </definition>
+    
+    <definition name="noticeView" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/notice/noticeView.jsp"/>
+    </definition>
+    
+     <definition name="noticeModify" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/notice/noticeModify.jsp"/>
+    </definition>
+    
+    <definition name="privacy" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/common/footer/privacy.jsp"/>
+    </definition>
+    
+    <definition name="terms" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/common/footer/terms.jsp"/>
+    </definition>
+    
+    <definition name="faq" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/common/footer/faq.jsp"/>
+    </definition>
+    
+      <definition name="loginConfirm" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/common/loginconfirm.jsp" />
+	</definition>
+	
+	<definition name="adminConfirm" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/common/adminconfirm.jsp" />
+	</definition>   
+    
+    
+    <!-- Member 관련 -->
+    <definition name="loginForm" extends="main">
+    	<put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp"/>
+    </definition>
+    <definition name="memList" extends="main">
+		<put-attribute name="body"
+			value="/WEB-INF/views/member/memberlist.jsp" />
+	</definition>
+    
+    
+    <definition name="loginSuccess" extends="main">
+	  	<put-attribute name="body" value="/WEB-INF/views/member/loginSuccess.jsp" />
+	 </definition> 
+    
+    
+    <!--멤버 -->
+	<definition name="member" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/member/JoinStep1.jsp" />
+	</definition>
+	<definition name="memberinfo" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/member/JoinStep2.jsp" />
+	</definition>
+	<definition name="memberend" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/member/JoinStep3.jsp" />
+	</definition>
+	<definition name="memberwith" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/member/memberWithdraw.jsp" />
+	</definition>
+	<definition name="memberidfind" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/member/IDfind.jsp" />
+	</definition>
+	<definition name="memberidfindend" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/member/IDfindOk.jsp" />
+	</definition>
+	<definition name="memberIdCheck" template="/WEB-INF/views/member/idCk.jsp">
+		</definition>
+	 <definition name="idFindError" extends="main">
+      <put-attribute name="body"
+         value="/WEB-INF/views/member/IDfindError.jsp" />
+   </definition>
+
+   <definition name="idFindOk" extends="main">
+      <put-attribute name="body" value="/WEB-INF/views/member/IDfindOk.jsp" />
+   </definition>
+
+   <definition name="pwFindOk" extends="main">
+      <put-attribute name="body" value="/WEB-INF/views/member/PWfindOk.jsp" />
+   </definition>
+
+  
+    <!-- 마이페이지 -->
+    <definition name="myTourList" extends="main">
+        <put-attribute name="body" value="/WEB-INF/views/mypage/myTourList.jsp"/>
+      </definition>
+    
+    <definition name="myInforList" extends="main">
+        <put-attribute name="body" value="/WEB-INF/views/mypage/myInforList.jsp"/>
+      </definition>
+   
+   
+       <definition name="myArticleList" extends="main">
+        <put-attribute name="body" value="/WEB-INF/views/mypage/myArticleList.jsp"/>
+      </definition>
+      
+      <definition name="memberModify" extends="main">
+        <put-attribute name="body" value="/WEB-INF/views/mypage/mypage.jsp"/>
+    </definition>
+    
+   <!-- 정보 커뮤니티 -->
+    <definition name="infoList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/information/InformationList.jsp" />
+	</definition>
+	
+	<definition name="infoView" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/information/InformationView.jsp" />
+	</definition>
+	
+	<definition name="infowrite" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/information/InformationWrite.jsp" />
+	</definition>
+	
+	
+	<definition name="planview" extends="view">
+		<put-attribute name="body" value="/WEB-INF/views/plan/planview.jsp" />
+	</definition>
+	
+	
+	<definition name="planview1" extends="view">
+		<put-attribute name="sidebar" value="/WEB-INF/views/plan/planview1.jsp" />
+	</definition>
+	
+	<definition name="planreg" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/plan/planlist.jsp" />
+	</definition>
+	
+	<definition name="planwrite" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/plan/planwrite.jsp" />
+	</definition>
+	
+	<!-- 여행기 게시판 : 김선영 -->
+	<definition name="reviewList" extends="main">
+		<put-attribute name="body"
+			value="/WEB-INF/views/review/reviewList.jsp" />
+	</definition>
+
+	<definition name="reviewView" extends="main">
+		<put-attribute name="body"
+			value="/WEB-INF/views/review/reviewView.jsp" />
+	</definition>
+
+	<definition name="reviewWriteForm" extends="main">
+		<put-attribute name="body"
+			value="/WEB-INF/views/review/reviewWriteForm.jsp" />
+	</definition>
+
+	<definition name="reviewUpdate" extends="main">
+		<put-attribute name="body"
+			value="/WEB-INF/views/review/reviewUpdateForm.jsp" />
+	</definition>
+	<!-- qna -->
+
+	<definition name="qnaList" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaList.jsp" />
+	</definition>
+
+	<definition name="qnaWriteForm" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaForm.jsp" />
+	</definition>
+
+	<definition name="qnaModify" extends="main">
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaModify.jsp" />
+	</definition>
+
+	<definition name="qnaView" extends="main">
+
+		<put-attribute name="body" value="/WEB-INF/views/qna/qnaView.jsp" />
+	</definition>
+	
+</tiles-definitions>

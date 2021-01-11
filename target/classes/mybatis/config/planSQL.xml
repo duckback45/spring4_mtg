@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="plan">
+   <resultMap type="planModel" id="planRes">
+		<result property="idx" column="idx"/>
+		<result property="user_name" column="user_name"/>
+		<result property="subject" column="subject"/>
+		<result property="content" column="content"/>
+		<result property="content2" column="content2"/>
+		<result property="reg_datetime" column="reg_datetime"/>
+		<result property="read_count" column="read_count"/>
+		<result property="planlike" column="planlike"/>
+		<result property="maplat" column="maplat"/>
+		<result property="maplng" column="maplng"/>
+	</resultMap>
+
+   <sql id="select">
+			SELECT * FROM plan
+		</sql>
+		
+		<select id="planList" resultMap="planRes">
+        SELECT * FROM plan
+    </select>
+
+    <select id="myplanList" resultMap="planRes">
+        SELECT * FROM plan where user_name = #{session_member_name}
+    </select>
+    
+    <select id="planListOne" resultMap="planRes">
+        SELECT * FROM plan WHERE idx = #{idx}
+    </select>
+    
+     <insert id="insert" parameterType="planModel">
+         INSERT INTO plan (IDX, user_name, subject, content, content2, content3, content4, content5, maplat, maplng, reg_datetime) 
+         VALUES (
+                IDX.NEXTVAL
+              , #{user_name, jdbcType=VARCHAR}
+              , #{subject, jdbcType=VARCHAR}
+              , #{content, jdbcType=VARCHAR}
+              , #{content2, jdbcType=VARCHAR}
+              , #{content3, jdbcType=VARCHAR}
+              , #{content4, jdbcType=VARCHAR}
+              , #{content5, jdbcType=VARCHAR}
+              , #{maplat, jdbcType=VARCHAR}
+              , #{maplng, jdbcType=VARCHAR}
+              , sysdate
+         )
+    </insert>  
+    
+     <update id="update" parameterType="planModel">
+         UPDATE plan SET
+               subject = #{subject, jdbcType=VARCHAR},
+             user_name = #{user_name, jdbcType=VARCHAR},
+               content = #{content, jdbcType=VARCHAR},
+              content2 = #{content2, jdbcType=VARCHAR},
+              content3 = #{content3, jdbcType=VARCHAR},
+              content4 = #{content4, jdbcType=VARCHAR},
+              content5 = #{content5, jdbcType=VARCHAR},
+              maplat = #{maplat, jdbcType=VARCHAR},
+              maplng = #{maplng, jdbcType=VARCHAR},
+              reg_datetime = sysdate
+         WHERE idx = #{idx,jdbcType=INTEGER}
+    </update>
+
+
+    <delete id="delete" parameterType="planModel">
+         DELETE FROM plan WHERE idx = #{idx}
+    </delete>
+   
+   <select id="selectSearch" parameterType="hashmap" resultMap="planRes">
+    SELECT * FROM plan
+    <where>
+          <choose>
+          <when test="sch_type == 'subject'">
+          AND subject  like '%'||#{sch_value}||'%' ORDER BY idx DESC
+          
+          </when>
+          <when test="sch_type == 'content'">
+          AND content  like '%'||#{sch_value}||'%' ORDER BY idx DESC
+          
+          </when>
+          <when test="sch_type == 'content2'">
+          AND content  like '%'||#{sch_value}||'%' ORDER BY idx DESC
+          </when>
+    
+          <when test="sch_type == 'user_name'">
+          AND user_name  like '%'||#{sch_value}||'%' ORDER BY idx DESC
+          </when>
+        
+          </choose>
+
+    </where>
+</select>
+
+<update id="updateReadCount" parameterType="planModel">
+UPDATE plan SET read_count = nvl(read_count,0) + 1 WHERE idx = #{idx}
+</update>
+<update id="updatelike" parameterType="planModel">
+UPDATE plan SET planlike = nvl(planlike,0) + 1 WHERE idx = #{idx}
+</update>
+   
+    </mapper>
